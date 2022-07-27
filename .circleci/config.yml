@@ -110,7 +110,8 @@ jobs:
           name: Frontend Auditing
           command: |
             cd frontend
-            npm audit --audit-level=critical
+            #npm audit --audit-level=critical
+            npm audit fix --audit-level=critical
 
 
 
@@ -125,7 +126,8 @@ jobs:
           name: Backend Auditing
           command: |
             cd backend
-            npm audit --audit-level=critical
+            #npm audit --audit-level=critical
+            npm audit fix --audit-level=critical
 
 
 #   deploy-infrastructure:
