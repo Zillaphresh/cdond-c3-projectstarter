@@ -193,7 +193,7 @@ jobs:
           name: Install dependencies
           command: |
             # Your code here
-            apk update &&  apk add ansible tar gzip  curl awscli && ansible --version && python --version
+            apk update &&  apk add ansible tar gzip  curl aws-cli && ansible --version && python --version
       - run:
           name: Configure server
           command: |
