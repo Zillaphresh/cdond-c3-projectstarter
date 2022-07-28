@@ -206,10 +206,10 @@ jobs:
     docker:
       # Docker image here that supports NodeJS
       - image: circleci/node:13.8.0
-      - attach_workspace:
-          at: ~/.circleci/ansible/inventory.txt
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/.circleci/ansible/inventory.txt
       - run:
           name: Install AWS CLI dependencies
           command: |
