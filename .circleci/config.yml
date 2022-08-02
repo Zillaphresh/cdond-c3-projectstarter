@@ -169,6 +169,7 @@ jobs:
           command: |
             aws ec2 describe-instances \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --filters "Name=tag:project,Values=udapeople-backend" \
             --region us-east-1 \
             --output text >> .circleci/ansible/inventory.ini
             cat .circleci/ansible/inventory.ini            
@@ -238,7 +239,7 @@ jobs:
           name: Install dependencies
           command: |
             apk add curl ansible nodejs npm python 
-            yum install -y tar gzip
+            apk add -y tar gzip
       - run:
           name: Get backend url
           command: |
