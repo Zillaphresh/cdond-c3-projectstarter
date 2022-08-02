@@ -219,9 +219,9 @@ jobs:
           name: Run migrations
           command: |
             cd backend
-            sudo npm install -g npm-install-peers
-            sudo npm install -g install-peerdeps
-            sudo npm run migrations > migrations_dump.txt
+            npm install -g npm-install-peers
+            npm run migrations > migrations_dump.txt
+            cat migrations_dump.txt
       - run:
           name: Send migration results to kvdb.io
           command: |
