@@ -210,16 +210,15 @@ jobs:
       - checkout
       - restore_cache:
           keys: [backend-build]
-      - run:
-          name: Update dependencies
-          command: |
-            sudo apt update
-            sudo apt upgrade -y
+      # - run:
+      #     name: Update dependencies
+      #     command: |
+      #       sudo apt update
+      #       sudo apt upgrade -y
       - run:
           name: Run migrations
           command: |
             cd backend
-            sudo npm install -g npm-install-peers
             sudo npm run migrations > migrations_dump.txt
             cat migrations_dump.txt
       - run:
