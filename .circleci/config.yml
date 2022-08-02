@@ -236,7 +236,7 @@ jobs:
   deploy-frontend:
     docker:
       # Docker image here that supports AWS CLI
-      - image: python:3.7-alpine3.11
+      - image: amazon/aws-cli
     steps:
       - checkout
       - attach_workspace:
@@ -244,7 +244,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add curl ansible nodejs npm
+            apk add curl ansible nodejs npm python
       - run:
           name: Get backend url
           command: |
@@ -295,7 +295,7 @@ jobs:
             tar -C backend -czvf artifact.tar.gz .
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
-            cat inventory.txt
+            cat inventory.ini
             ansible-playbook -i inventory.ini deploy-backend.yml
       # Here's where you will add some code to rollback on failure  
 
