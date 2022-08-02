@@ -205,16 +205,16 @@ jobs:
   run-migrations:
     docker:
       # Docker image here that supports NodeJS
-      - image: circleci/node:13.8.0
+      - image: circleci/node:16.10.0
     steps:
       - checkout
       - restore_cache:
           keys: [backend-build]
-      # - run:
-      #     name: Update dependencies
-      #     command: |
-      #       sudo apt update
-      #       sudo apt upgrade -y
+      - run:
+          name: Update dependencies
+          command: |
+            sudo apt update
+            sudo apt upgrade -y
       - run:
           name: Run migrations
           command: |
