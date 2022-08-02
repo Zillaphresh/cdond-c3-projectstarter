@@ -113,14 +113,5 @@
     ],
     "testEnvironment": "node",
     "verbose": false
-  },
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ],
-    "nohoist": [
-      "**/typeorm",
-      "**/typeorm/**"
-    ]
   }
 }

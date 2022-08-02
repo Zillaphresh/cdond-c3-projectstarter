@@ -171,7 +171,7 @@ jobs:
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --region us-east-1 \
             --output text >> .circleci/ansible/inventory.ini
-            
+            cat .circleci/ansible/inventory.ini            
       - persist_to_workspace:
           root: ~/
           paths:
@@ -198,6 +198,7 @@ jobs:
           name: Configure server
           command: |
             cd .circleci/ansible
+            cat inventory.ini
             ansible-playbook -i inventory.ini configure-server.yml
 
       # Here's where you will add some code to rollback on failure      
