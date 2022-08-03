@@ -2,6 +2,7 @@
   - name: "Installing packages"
     apt:
       name: rsync
+      become: yes
       state: latest
       update_cache: yes
 
