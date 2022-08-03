@@ -12,36 +12,6 @@ commands:
             aws cloudformation delete-stack --region us-east-1 --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
             aws cloudformation delete-stack --region us-east-1 --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
 
-  install_awscli:
-    description: Install AWS CLI
-    steps:
-      - run:
-          name: Install AWS CLI
-          command: |
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
-
-  install_ansible:
-    description: Install Ansible
-    steps:
-      - run:
-          name: Install Ansible
-          command: |
-            sudo apt update
-            sudo apt install software-properties-common -y
-            sudo add-apt-repository --yes --update ppa:ansible/ansible
-            sudo apt install ansible -y
-
-  install_nodejs:
-    description: Install Node.js 13
-    steps:
-      - run:
-          name: Install Node.js 13
-          command: |
-            curl -fsSL https://deb.nodesource.com/setup_13.x | sudo -E bash -
-            sudo apt install -y nodej
-
   revert_migrations:
     description: Revert the last migration if successfully run in the current workflow.   
     steps:
@@ -306,6 +276,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            pip install awscli
             apk add --update ansible npm curl tar gzip
       - run:
           name: Deploy backend

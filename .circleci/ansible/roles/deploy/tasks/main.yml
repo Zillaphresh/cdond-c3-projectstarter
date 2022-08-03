@@ -1,8 +1,8 @@
 
   - name: "Installing packages"
+    become: yes
     apt:
       name: rsync
-      become: yes
       state: latest
       update_cache: yes
 
