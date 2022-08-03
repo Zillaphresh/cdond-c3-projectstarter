@@ -299,7 +299,7 @@ jobs:
             ansible-playbook -i inventory.ini deploy-backend.yml
       - attach_workspace:
           at: .
-      - destroy_environment:
+      - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}  
 
   smoke-test:
@@ -338,10 +338,10 @@ jobs:
             else
               return 1
             fi
-      - destroy_environment:
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      - revert_migrations:
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7} 
+      # - destroy_environment:
+      #     workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      # - revert_migrations:
+      #     workflow_id: ${CIRCLE_WORKFLOW_ID:0:7} 
 
 #   cloudfront-update:
 #     docker:
