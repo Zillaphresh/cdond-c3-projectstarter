@@ -1,3 +1,9 @@
+
+  - name: "Installing packages"
+      apt: rsync
+      state: latest
+      update_cache: yes
+
   - name: "copy backend binaries"
     become: yes
     synchronize:

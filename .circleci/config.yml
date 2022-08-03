@@ -241,7 +241,7 @@ jobs:
           name: Install dependencies
           command: |
             yum install curl ansible nodejs npm python 
-            yum install tar gzip
+            yum install -y tar gzip
       - run:
           name: Get backend url
           command: |
@@ -276,8 +276,6 @@ jobs:
       - add_ssh_keys:
           fingerprints: 
             - "84:46:d2:4b:2d:f0:6a:05:d1:c7:30:46:e0:44:ae:9e"
-      - attach_workspace:
-          at: .
       - run:
           name: Install dependencies
           command: |
@@ -295,6 +293,8 @@ jobs:
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.ini
             ansible-playbook -i inventory.ini deploy-backend.yml
+      - attach_workspace:
+          at: .
       # Here's where you will add some code to rollback on failure  
 
 #   smoke-test:
