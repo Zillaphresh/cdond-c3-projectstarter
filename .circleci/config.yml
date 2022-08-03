@@ -174,9 +174,9 @@ jobs:
             --output text >> .circleci/ansible/inventory.ini
             cat .circleci/ansible/inventory.ini            
       - persist_to_workspace:
-          root: ~/
+          root: .
           paths:
-            - project/.circleci/ansible/inventory.ini
+            - .circleci/ansible/*
       #- destroy-environment      
 
   configure-infrastructure:
@@ -240,7 +240,8 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            yum install curl ansible nodejs npm python tar gzip
+            yum install curl ansible nodejs npm python 
+            yum install tar gzip
       - run:
           name: Get backend url
           command: |
