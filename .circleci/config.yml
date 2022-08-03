@@ -1,6 +1,4 @@
 version: 2.1
-orbs: 
-  slack: circleci/slack@4.10.1
 
 commands:
   destroy-environment:
@@ -271,6 +269,8 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
+      - attach_workspace:
+          at: .
       - add_ssh_keys:
           fingerprints: 
             - "84:46:d2:4b:2d:f0:6a:05:d1:c7:30:46:e0:44:ae:9e"
@@ -291,8 +291,6 @@ jobs:
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.ini
             ansible-playbook -i inventory.ini deploy-backend.yml
-      - attach_workspace:
-          at: .
       - destroy-environment
       - revert-migrations
             
