@@ -173,7 +173,7 @@ jobs:
           root: .
           paths:
             - .circleci/ansible/*
-      - destroy-environment      
+      - destroy_environment      
 
   configure-infrastructure:
     docker:
@@ -291,8 +291,8 @@ jobs:
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.ini
             ansible-playbook -i inventory.ini deploy-backend.yml
-      - destroy-environment
-      - revert-migrations
+      - destroy_environment
+      - revert_migrations
             
 
   smoke-test:
