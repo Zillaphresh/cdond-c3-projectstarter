@@ -1,15 +1,3 @@
-
-  # - name: install rsync on the ansible controller
-  #   connection: local
-  #   package:
-  #     name: rsync
-      state: present
-  # - name: install pm2 on the ansible controller
-  #   become: yes
-  #   npm:
-  #     name: pm2
-  #     state: present
-  
   - name: "copy backend binaries"
     become: yes
     synchronize:
