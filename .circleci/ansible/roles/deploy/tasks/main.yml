@@ -4,6 +4,10 @@
     package:
       name: rsync
       state: present
+  - name: install openssh on the ansible controller
+    apt:
+      name: openssh-client
+      state: latest
 
   - name: "copy backend binaries"
     become: yes
