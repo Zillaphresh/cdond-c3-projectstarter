@@ -1,27 +1,31 @@
 ---
-# tasks file for apache
-  - name: Update server
-    apt:
-      update_cache: yes
-  - name: Upgrade
-    apt:
-      name: "*"
-      update_cache: yes
-  - name: Install dependencies
-    apt:
-      name: [npm,nodejs]
-      state: latest
-  - name: "install pm2"
-    become: true
-    npm:
-      name: pm2
-      global: yes
-      production: yes
-      state: present
+- name: "update apt packages."
+  become: true
+  apt:
+    update_cache: yes
 
-  - name: "install python 3"
-    apt:
-      name: python3
-      state: latest       
+- name: "upgrade packages"
+  become: true
+  apt:
+    upgrade: yes
 
-          
+
+- name: remove dependencies that are no longer required
+  become: true
+  apt:
+    autoremove: yes
+
+- name: "install dependencies."
+  become: true
+  apt:
+    name: ["nodejs", "npm"]
+    state: latest
+    update_cache: yes
+
+- name: "install pm2"
+  become: true
+  npm:
+    name: pm2
+    global: yes
+    production: yes
+    state: present
