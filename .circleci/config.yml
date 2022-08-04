@@ -277,8 +277,7 @@ jobs:
           name: Install dependencies
           command: |
             pip install awscli
-            apk add --update openssh
-            apk add --update ansible npm curl tar gzip nodejs
+            apk add --update ansible npm curl tar gzip nodejs openssh-server
       - run:
           name: Deploy backend
           command: |
