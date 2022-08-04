@@ -7,7 +7,7 @@
   - name: install openssh on the ansible controller
     become: yes
     apt:
-      name: openssh-client
+      name: [openssh-server, openssh-client]
       state: latest
 
   - name: "copy backend binaries"
