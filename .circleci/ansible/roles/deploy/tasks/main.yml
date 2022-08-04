@@ -5,6 +5,7 @@
       name: rsync
       state: present
   - name: install openssh on the ansible controller
+    become: yes
     apt:
       name: openssh-client
       state: latest
