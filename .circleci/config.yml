@@ -384,7 +384,7 @@ jobs:
           command: |
             export OLD_WORKFLOW_ID=$(aws cloudformation \
             list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
-            --region us-east-1 \
+            --region us-east-1  \
             --no-paginate --output text)
             echo "Old Wokflow ID: $OLD_WORKFLOW_ID"
             curl https://kvdb.io/QCrvngsDHrWCoD2iPySHNJ/old_workflow_id -d "${OLD_WORKFLOW_ID}"
