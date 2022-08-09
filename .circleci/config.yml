@@ -336,7 +336,7 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update --no-cache aws-cli curl  
-            apk add --update nodejs npm
+            apk add  nodejs npm
       - run:
           name: Backend smoke test.
           command: |
@@ -345,9 +345,9 @@ jobs:
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --region us-east-1 \
             --output text)
-            export API_URL=https://${BACKEND_IP}:3030
+            export API_URL="https://${BACKEND_IP}:3030"
             echo "${API_URL}"
-            if curl  "${API_UR}L/api/status" | grep "ok"
+            if curl  "${API_URL}/api/status" | grep "ok"
             then
               return 0
             else
