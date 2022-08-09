@@ -185,11 +185,18 @@ jobs:
       - checkout
       - restore_cache:
           keys: [backend-build]
+      # - run:
+      #     name: Update dependencies
+      #     command: |
+      #       sudo apt update
+      #       sudo apt upgrade -y
       - run:
-          name: Update dependencies
+          name: Install AWS CLI dependencies
           command: |
-            sudo apt update
-            sudo apt upgrade -y
+            sudo apt-get update && sudo apt-get install -yy less
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
       - run:
           name: Run migrations
           command: |
