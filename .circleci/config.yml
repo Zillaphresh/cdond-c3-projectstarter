@@ -148,11 +148,11 @@ jobs:
             aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --region us-east-1 \
-              --output text >> .circleci/ansible/inventory.txt
+              --output text >> .circleci/ansible/inventory.ini
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/.circleci/ansible/inventory.txt
+            - project/.circleci/ansible/*
       - destroy-environment
 
   configure-infrastructure:
@@ -175,7 +175,7 @@ jobs:
           name: Configure server
           command: |
             cd .circleci/ansible
-            ansible-playbook -i ~/tmp/project/.circleci/ansible/inventory.txt configure-server.yml
+            ansible-playbook -i ~/tmp/project/.circleci/ansible/inventory.ini configure-server.yml
       - destroy-environment
 
   run-migrations:
@@ -183,8 +183,8 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - restore_cache:
-          keys: [backend-build]
+      - attach_workspace:
+          at: ~/
       # - run:
       #     name: Update dependencies
       #     command: |
@@ -286,7 +286,7 @@ jobs:
             mkdir -m 755 .circleci/ansible/roles/deploy/files/
             cp artifact.tar.gz  .circleci/ansible/roles/deploy/files/
             cd .circleci/ansible
-            ansible-playbook -i ~/tmp/project/.circleci/ansible/inventory.txt deploy-backend.yml
+            ansible-playbook -i ~/tmp/project/.circleci/ansible/inventory.ini deploy-backend.yml
       - destroy-environment
       - revert-migrations
 
