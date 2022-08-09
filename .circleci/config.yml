@@ -181,6 +181,7 @@ jobs:
               --template-file .circleci/files/backend.yml \
               --tags Project=udapeople \
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --region us-east-1 \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
       - run:
           name: Ensure front-end infrastructure exist
@@ -189,6 +190,7 @@ jobs:
               --template-file .circleci/files/frontend.yml \
               --tags project=udapeople \
               --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --region us-east-1 \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
       - run:
           name: Add back-end ip to ansible inventory
@@ -196,6 +198,7 @@ jobs:
             aws ec2 describe-instances \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --filters "Name=tag:Project,Values=udapeople" \
+            --region us-east-1 \
             --output text >> .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
       - persist_to_workspace:
@@ -211,7 +214,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys: 
-          fingerprints: ["f8:4a:25:fa:1c:03:21:14:45:7b:06:38:21:06:57:88"]
+          fingerprints: ["1c:e1:5e:8c:bb:02:bf:c9:02:93:b4:a3:42:f4:69:28"]
       - attach_workspace:
           at: .
       - run: 
@@ -284,6 +287,7 @@ jobs:
             export BACKEND_IP=$(aws ec2 describe-instances \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
             --filters "Name=tag:Project,Values=udapeople" \
+            --region us-east-1 \
             --output text)
             
             export API_URL="http://${BACKEND_IP}:3030"
@@ -307,7 +311,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["f8:4a:25:fa:1c:03:21:14:45:7b:06:38:21:06:57:88"]
+          fingerprints: ["1c:e1:5e:8c:bb:02:bf:c9:02:93:b4:a3:42:f4:69:28"]
       - attach_workspace:
           at: .
       - run:
@@ -363,6 +367,7 @@ jobs:
             BACKEND_IP=$(aws ec2 describe-instances \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --region us-east-1 \
               --output text)
             export API_URL=http://${BACKEND_IP}:3030
             echo "${API_URL}"
@@ -389,6 +394,7 @@ jobs:
           command: |
             export OLD_WORKFLOW_ID=$(aws cloudformation \
                       list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+                      --region us-east-1 \
                       --no-paginate --output text)
             echo "Old Wokflow ID: $OLD_WORKFLOW_ID"
             curl https://kvdb.io/2HwnyNSth6t8DZyFA5g13j/old_workflow_id -d "${OLD_WORKFLOW_ID}"
@@ -397,6 +403,7 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/cloudfront.yml \
+              --region us-east-1 \
               --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
               --stack-name InitialStack
       - destroy_environment:
@@ -414,7 +421,7 @@ jobs:
           command: |
             export OldWorkflowID=$(aws cloudformation \
               list-exports --query "Exports[?Name==\`WORKFLOW_ID\`].Value" \
-              --no-paginate --output text)
+              --no-paginate --region us-east-1 --output text)
             echo OldWorkflowID: "${OldWorkflowID}"
             echo CIRCLE_WORKFLOW_ID "${CIRCLE_WORKFLOW_ID:0:7}"
             export STACKS=($(aws cloudformation \
