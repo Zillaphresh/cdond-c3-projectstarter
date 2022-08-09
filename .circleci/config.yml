@@ -55,7 +55,7 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            export SUCCESS=$(curl --insecure  https://kvdb.io/2HwnyNSth6t8DZyFA5g13j/migration_<< parameters.workflow_id >>)
+            export SUCCESS=$(curl --insecure  https://kvdb.io/QCrvngsDHrWCoD2iPySHNJ/migration_<< parameters.workflow_id >>)
             # Logic for reverting the database state
             if (( $SUCCESS == 1 ));
             then
@@ -181,7 +181,6 @@ jobs:
               --template-file .circleci/files/backend.yml \
               --tags Project=udapeople \
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --region us-east-1 \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
       - run:
           name: Ensure front-end infrastructure exist
@@ -262,7 +261,7 @@ jobs:
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
               sudo apt-get update && sudo apt-get install -y ca-certificates
-              curl https://kvdb.io/Y2KNsbnjNygvrpLpYzaqxu/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
+              curl https://kvdb.io/QCrvngsDHrWCoD2iPySHNJ/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
 
             fi 
       - destroy_environment:
@@ -397,13 +396,12 @@ jobs:
                       --region us-east-1 \
                       --no-paginate --output text)
             echo "Old Wokflow ID: $OLD_WORKFLOW_ID"
-            curl https://kvdb.io/2HwnyNSth6t8DZyFA5g13j/old_workflow_id -d "${OLD_WORKFLOW_ID}"
+            curl https://kvdb.io/QCrvngsDHrWCoD2iPySHNJ/old_workflow_id -d "${OLD_WORKFLOW_ID}"
       - run:
           name: Update cloudfront distribution
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/cloudfront.yml \
-              --region us-east-1 \
               --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
               --stack-name InitialStack
       - destroy_environment:
