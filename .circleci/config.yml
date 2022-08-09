@@ -150,9 +150,9 @@ jobs:
               --region us-east-1 \
               --output text >> .circleci/ansible/inventory.ini
       - persist_to_workspace:
-          root: ~/
+          root: .
           paths:
-            - project/.circleci/ansible/*
+            - .circleci/ansible/*
       - destroy-environment
 
   configure-infrastructure:
@@ -163,7 +163,7 @@ jobs:
       - add_ssh_keys:
           fingerprints: ["1c:e1:5e:8c:bb:02:bf:c9:02:93:b4:a3:42:f4:69:28"]
       - attach_workspace:
-          at: ~/tmp
+          at: .
       - run:
           name: Install dependencies
           command: |
@@ -175,7 +175,7 @@ jobs:
           name: Configure server
           command: |
             cd .circleci/ansible
-            ansible-playbook -i ~/tmp/project/.circleci/ansible/inventory.ini configure-server.yml
+            ansible-playbook -i .circleci/ansible/inventory.ini configure-server.yml
       - destroy-environment
 
   run-migrations:
@@ -184,7 +184,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ~/
+          at:  ~/.circleci/ansible/inventory.ini
       # - run:
       #     name: Update dependencies
       #     command: |
@@ -233,7 +233,7 @@ jobs:
             curl -sL https://rpm.nodesource.com/setup_13.x |sudo -E bash -
             sudo yum install -y nodejs
       - attach_workspace:
-          at: ~/tmp
+          at: .
       - run:
           name: Get backend url
           command: |
@@ -263,7 +263,7 @@ jobs:
       - add_ssh_keys:
           fingerprints: ["1c:e1:5e:8c:bb:02:bf:c9:02:93:b4:a3:42:f4:69:28"]
       - attach_workspace:
-          at: ~/tmp
+          at: .
       - run:
           name: Install dependencies
           command: |
@@ -286,7 +286,7 @@ jobs:
             mkdir -m 755 .circleci/ansible/roles/deploy/files/
             cp artifact.tar.gz  .circleci/ansible/roles/deploy/files/
             cd .circleci/ansible
-            ansible-playbook -i ~/tmp/project/.circleci/ansible/inventory.ini deploy-backend.yml
+            ansible-playbook -i .circleci/ansible/inventory.ini deploy-backend.yml
       - destroy-environment
       - revert-migrations
 
