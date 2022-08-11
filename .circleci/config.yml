@@ -146,6 +146,7 @@ jobs:
             aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --output text >> .circleci/ansible/inventory.txt
+            cat .circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: .
           paths:
@@ -227,7 +228,7 @@ jobs:
             curl -sL https://rpm.nodesource.com/setup_13.x |sudo -E bash -
             sudo yum install -y nodejs
       - attach_workspace:
-          at: ~/tmp
+          at: .
       - run:
           name: Get backend url
           command: |
@@ -280,7 +281,7 @@ jobs:
             mkdir -m 755 .circleci/ansible/roles/deploy/files/
             cp artifact.tar.gz  .circleci/ansible/roles/deploy/files/
             cd .circleci/ansible
-            ansible-playbook -i .circleci/ansible/inventory.txt deploy-backend.yml
+            ansible-playbook -i inventory.txt deploy-backend.yml
       - destroy_environment
       - revert_migrations
 
