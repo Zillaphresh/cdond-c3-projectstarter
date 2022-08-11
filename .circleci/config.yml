@@ -9,8 +9,8 @@ commands:
           when: on_fail
           command: |
             aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-            aws cloudformation delete-stack --region us-east-1 --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
-            aws cloudformation delete-stack --region us-east-1 --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
+            aws cloudformation delete-stack  --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
+            aws cloudformation delete-stack  --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
   revert_migrations:
     description: Revert the last migration if successfully run in the current workflow.
     steps:
@@ -130,7 +130,6 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
               --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7} \
-              --region us-east-1 \
               --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7} \
               --tags project=udapeople
       - run:
@@ -139,7 +138,6 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
               --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7} \
-              --region us-east-1 \
               --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7} \
               --tags project=udapeople
       - run:
@@ -147,7 +145,6 @@ jobs:
           command: |
             aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --region us-east-1 \
               --output text >> .circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/
@@ -236,7 +233,6 @@ jobs:
           command: |
             export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --region us-east-1 \
               --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
@@ -305,7 +301,6 @@ jobs:
           command: |
             export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --region us-east-1 \
               --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}" >> ip.txt
@@ -346,7 +341,6 @@ jobs:
             --template-file .circleci/files/cloudfront.yml \
             --stack-name InitialStack \
             --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
-            --region us-east-1 \
             --tags project=udapeople
       - destroy_environment
       - revert_migrations 
@@ -371,8 +365,8 @@ jobs:
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
               # aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
-              # aws cloudformation delete-stack --region us-east-1 --stack-name "udapeople-backend-${OldWorkflowID}"
-              # aws cloudformation delete-stack --region us-east-1 --stack-name "udapeople-frontend-${OldWorkflowID}"
+              # aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
+              # aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
             else
               echo ------------ Cannot cleanup stacks --------------
             fi
