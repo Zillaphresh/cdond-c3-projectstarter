@@ -11,7 +11,7 @@ commands:
             aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
             aws cloudformation delete-stack --region us-east-1 --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
             aws cloudformation delete-stack --region us-east-1 --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
-  revert-migrations:
+  revert_migrations:
     description: Revert the last migration if successfully run in the current workflow.
     steps:
       - run:
@@ -153,7 +153,7 @@ jobs:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-      - destroy-environment
+      - destroy_environment
 
   configure-infrastructure:
     docker:
@@ -176,7 +176,7 @@ jobs:
           command: |
             cd .circleci/ansible
             ansible-playbook -i ~/tmp/project/.circleci/ansible/inventory.txt configure-server.yml
-      - destroy-environment
+      - destroy_environment
           
   run-migrations:
     docker:
@@ -209,7 +209,7 @@ jobs:
 
             fi 
       - destroy_environment
-      - revert-migrations   
+      - revert_migrations   
 
   deploy-frontend:
     docker:
@@ -250,8 +250,8 @@ jobs:
             npm run build
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-      - destroy-environment
-      - revert-migrations
+      - destroy_environment
+      - revert_migrations
 
   deploy-backend:
     docker:
@@ -285,8 +285,8 @@ jobs:
             cp artifact.tar.gz  .circleci/ansible/roles/deploy/files/
             cd .circleci/ansible
             ansible-playbook -i ~/tmp/project/.circleci/ansible/inventory.txt deploy-backend.yml
-      - destroy-environment
-      - revert-migrations
+      - destroy_environment
+      - revert_migrations
 
   smoke-test:
     docker:
@@ -330,8 +330,8 @@ jobs:
             else
               return 1
             fi
-      - destroy-environment
-      - revert-migrations
+      - destroy_environment
+      - revert_migrations
 
   # This is the right way to handle cleanup and update. Notice how I first get the oldWorkflowId before doing updat
   cloudfront-update:
@@ -348,8 +348,8 @@ jobs:
             --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
             --region us-east-1 \
             --tags project=udapeople
-      - destroy-environment
-      - revert-migrations 
+      - destroy_environment
+      - revert_migrations 
   cleanup:
     docker:
       - image: amazon/aws-cli
