@@ -147,9 +147,9 @@ jobs:
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --output text >> .circleci/ansible/inventory.txt
       - persist_to_workspace:
-          root: ~/
+          root: .
           paths:
-            - project/.circleci/ansible/inventory.txt
+            - .circleci/ansible/inventory.txt
       - destroy_environment
 
   configure-infrastructure:
@@ -160,7 +160,7 @@ jobs:
       - add_ssh_keys:
           fingerprints: ["1c:e1:5e:8c:bb:02:bf:c9:02:93:b4:a3:42:f4:69:28"]
       - attach_workspace:
-          at: ~/tmp
+          at: .
       - run:
           name: Install dependencies
           command: |
@@ -172,7 +172,7 @@ jobs:
           name: Configure server
           command: |
             cd .circleci/ansible
-            ansible-playbook -i ~/tmp/project/.circleci/ansible/inventory.txt configure-server.yml
+            ansible-playbook -i .circleci/ansible/inventory.txt configure-server.yml
       - destroy_environment
           
   run-migrations:
@@ -257,7 +257,7 @@ jobs:
       - add_ssh_keys:
           fingerprints: ["1c:e1:5e:8c:bb:02:bf:c9:02:93:b4:a3:42:f4:69:28"]
       - attach_workspace:
-          at: ~/tmp
+          at: .
       - run:
           name: Install dependencies
           command: |
@@ -280,7 +280,7 @@ jobs:
             mkdir -m 755 .circleci/ansible/roles/deploy/files/
             cp artifact.tar.gz  .circleci/ansible/roles/deploy/files/
             cd .circleci/ansible
-            ansible-playbook -i ~/tmp/project/.circleci/ansible/inventory.txt deploy-backend.yml
+            ansible-playbook -i .circleci/ansible/inventory.txt deploy-backend.yml
       - destroy_environment
       - revert_migrations
 
