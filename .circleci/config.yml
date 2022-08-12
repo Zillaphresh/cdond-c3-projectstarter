@@ -329,8 +329,7 @@ jobs:
             else
               return 1
             fi
-      # - destroy_environment
-      # - revert_migrations
+
 
   # This is the right way to handle cleanup and update. Notice how I first get the oldWorkflowId before doing updat
   cloudfront-update:
