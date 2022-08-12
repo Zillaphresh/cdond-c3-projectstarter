@@ -150,7 +150,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - .circleci/ansible/inventory.txt
+            - .circleci/ansible/*
       - destroy_environment
 
   configure-infrastructure:
@@ -162,18 +162,20 @@ jobs:
           fingerprints: ["1c:e1:5e:8c:bb:02:bf:c9:02:93:b4:a3:42:f4:69:28"]
       - attach_workspace:
           at: .
+      - run: 
+          name: View content of inventory.txt
+          command: cat .circleci/ansible/inventory.txt
       - run:
           name: Install dependencies
           command: |
             apk add --update ansible
             apk add --update openssh-server
-            apk --no-cache add --virtual builds-deps build-base python3
             pip install --upgrade pip && pip install --upgrade awscli
       - run:
           name: Configure server
           command: |
             cd .circleci/ansible
-            ansible-playbook -i .circleci/ansible/inventory.txt configure-server.yml
+            ansible-playbook -i inventory.txt configure-server.yml
       - destroy_environment
           
   run-migrations:
