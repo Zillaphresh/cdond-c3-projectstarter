@@ -373,7 +373,7 @@ workflows:
             branches:
               only: [master]
       - configure-infrastructure:
-          requires: [deploy-infrastructure]
+          requires: [deploy_infrastructure]
           filters:
             branches:
               only: [master]
