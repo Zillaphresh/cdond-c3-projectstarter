@@ -380,7 +380,7 @@ jobs:
             fi     
 
 workflows:
-  default1:
+  default:
     jobs:
       - build-frontend
       - build-backend
